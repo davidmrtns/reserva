@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    Checkout
+{% endblock %}
+
+{% block body %}
+    <main class="principal">
+        <section class="secao-checkout">
+            <a href="{% url 'carrinho' %}" class="checkout__botao">Voltar ao carrinho</a>
+            {% if erro %}
+                {% if erro == "preco" %}
+                    <p>Um erro ocorreu. Tente novamente</p>
+                {% endif %}
+                {% if erro == "endereco" %}
+                    <p>Adicione um endereço para prosseguir</p>
+                {% endif %}
+                {% if erro == "email" %}
+                    <p>Digite um e-mail válido para confirmarmos a sua compra</p>
+                {% endif %}
+            {% endif %}
+            <div class="checkout">
+                <form class="checkout__form" action="{% url 'finalizar_pedido' pedido.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="checkout__secao-entrega-login {% if request.user.is_authenticated %} checkout__secao-entrega-login--logado {% endif %}">
+                        {% if not request.user.is_authenticated %}
+                            <div class="checkout__secao-login">
+                                <div class="checkout__titulos">
+                                    <p class="checkout__titulo">Identifique-se</p>
+                                </div>
+                                <div class="checkout__endereco-item">
+                                    <label for="email">E-mail</label>
+                                    <input name="email" type="email" />
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="checkout__secao-entrega">
+                            <div class="checkout__titulos">
+                                <p class="checkout__titulo">Endereço de entrega</p>
+                                <a href="{% url 'adicionar_endereco' %}" class="checkout__botao checkout__botao--entrega" type="button">
+                                    Adicionar endereço de entrega
+                                </a>
+                            </div>
+                            <div class="checkout__endereco-cadastrado">
+                                {% for endereco in enderecos %}
+                                    <div class="checkout__pagamento-item">
+                                        <input type="radio" name="endereco" value="{{ endereco.id }}" />
+                                        <label for="{{ endereco.id }}">{{ endereco.rua }}, {{ endereco.numero }},
+                                            {{ endereco.bairro }}, {{ endereco.cidade }},
+                                            {{ endereco.estado }} - CEP: {{ endereco.cep }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="checkout__secao-pagamento-infos">
+                        <div class="checkout__secao-pagamento">
+                            <div class="checkout__secao-infos">
+                                <div class="checkout__titulos checkout__titulos--mb">
+                                    <p class="checkout__titulo">Resumo</p>
+                                </div>
+                                <div class="subtotal__infos">
+                                    <p>Quantidade de Produtos</p>
+                                    <p>{{ pedido.quantidade_total }}</p>
+                                </div>
+                                <div class="subtotal__infos subtotal__infos--sborda">
+                                    <p>Total</p>
+                                    <p>R$ {{ pedido.preco_total }}</p>
+                                </div>
+                                <input type="hidden" value="{{ pedido.preco_total }}" name="total">
+                                <button type="submit" class="subtotal__botao">Finalizar Pedido</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+{% endblock %}

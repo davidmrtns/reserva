@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}
+    Minha conta
+{% endblock %}
+
+{% block body %}
+    <main class="principal">
+        <section class="conta">
+            {% if alterado %}
+                <p>Alterações salvas</p>
+            {% endif %}
+            {% if erro == "formulario_invalido" %}
+                <p>Preencha seus dados corretamente</p>
+            {% endif %}
+            <div class="conta__container">
+                <div class="checkout__titulos">
+                    <p class="checkout__titulo">Dados pessoais</p>
+                </div>
+                {% if erro == "email_existente" %}
+                    <p>Já existe alguém com esse e-mail cadastrado</p>
+                {% endif %}
+                <form class="conta__form" action="" method="POST">
+                    {% csrf_token %}
+                    <div class="conta__item">
+                        <label for="nome">Nome</label>
+                        <input name="nome" type="text" {% if request.user.cliente.nome %} value="{{ request.user.cliente.nome }}" {% endif %} />
+                    </div>
+                    <div class="conta__item">
+                        <label for="telefone">Telefone</label>
+                        <input name="telefone" type="number" value="{{ request.user.cliente.telefone }}" />
+                    </div>
+                    <div class="conta__item conta__item--email">
+                        <label for="email">E-mail</label>
+                        <input name="email" type="email" value="{{ request.user.email }}" />
+                    </div>
+                    <button class="subtotal__botao" type="submit">Salvar alterações</button>
+                </form>
+            </div>
+            <div class="conta__container">
+                <div class="checkout__titulos">
+                    <p class="checkout__titulo">Alterar senha</p>
+                </div>
+                {% if erro == "senha_incorreta" %}
+                    <p>Sua senha atual está incorreta</p>
+                {% endif %}
+                {% if erro == "senhas_diferentes" %}
+                    <p>As senhas são diferentes</p>
+                {% endif %}
+                <form class="conta__form" action="" method="POST">
+                    {% csrf_token %}
+                    <div class="conta__item conta__item--email">
+                        <label for="name">Senha atual</label>
+                        <input name="senha_atual" type="password" />
+                    </div>
+                    <div class="conta__item">
+                        <label for="nova_senha">Nova senha</label>
+                        <input name="nova_senha" type="password" />
+                    </div>
+                    <div class="conta__item">
+                        <label for="nova_senha_confirmacao">Confirme a nova senha</label>
+                        <input name="nova_senha_confirmacao" type="password" />
+                    </div>
+                    <button class="subtotal__botao" type="submit">Salvar alterações</button>
+                </form>
+            </div>
+        </section>
+    </main>
+{% endblock %}

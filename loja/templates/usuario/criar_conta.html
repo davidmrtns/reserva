@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}
+    Criar conta
+{% endblock %}
+
+{% block body %}
+    <main class="principal">
+        <section class="conta">
+            <div class="conta__container">
+                <div class="checkout__titulos">
+                    <p class="checkout__titulo">Crie sua conta</p>
+                </div>
+                {% if erro == "email_invalido" %}
+                    <p>O e-mail informado não é válido</p>
+                {% endif %}
+                {% if erro == "nome_invalido" %}
+                    <p>Preencha o nome corretamente</p>
+                {% endif %}
+                {% if erro == "senha_diferentes" %}
+                    <p>As senhas são diferentes</p>
+                {% endif %}
+                {% if erro == "usuario_existente" %}
+                    <p>Já existe um usuário cadastrado com esse e-mail. <a href="{% url 'login' %}">Faça login</a></p>
+                {% endif %}
+                {% if erro == "preenchimento" %}
+                    <p>Preencha todos os campos corretamente</p>
+                {% endif %}
+                <form class="conta__form" action="" method="POST">
+                    {% csrf_token %}
+                    <div class="conta__item">
+                        <label for="nome">Nome completo</label>
+                        <input name="nome" type="text" />
+                    </div>
+                    <div class="conta__item">
+                        <label for="email">E-mail</label>
+                        <input name="email" type="email" />
+                    </div>
+                    <div class="conta__item">
+                        <label for="senha">Senha</label>
+                        <input name="senha" type="password" />
+                    </div>
+                    <div class="conta__item">
+                        <label for="confirmacao_senha">Confirme a senha</label>
+                        <input name="confirmacao_senha" type="password" />
+                    </div>
+                    <button class="subtotal__botao" type="submit">Criar conta</button>
+                </form>
+                <a href="{% url 'login' %}">Já tem uma conta? Faça login</a>
+            </div>
+        </section>
+    </main>
+{% endblock %}

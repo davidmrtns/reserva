@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}
+    Gerenciar loja
+{% endblock %}
+
+{% block body %}
+    <main class="principal">
+        <section class="conta">
+            <div class="conta__container">
+                <div class="checkout__titulos">
+                    <p class="checkout__titulo">Principais indicadores</p>
+                </div>
+                <p><b>Faturamento:</b> R$ {{ faturamento }}</p>
+                <p><b>Produtos vendidos:</b> {{ qtd_produtos }}</p>
+                <p><b>Total de pedidos:</b> {{ qtd_pedidos }}</p>
+            </div>
+            <div class="conta__container">
+                <div class="checkout__titulos">
+                    <p class="checkout__titulo">Exportar relatórios</p>
+                </div>
+                <a href="{% url 'exportar_relatorio' 'pedidos' %}" class="subtotal__botao">
+                    Exportar pedidos
+                </a>
+                <a href="{% url 'exportar_relatorio' 'clientes' %}" class="subtotal__botao">
+                    Exportar clientes
+                </a>
+                <a href="{% url 'exportar_relatorio' 'enderecos' %}" class="subtotal__botao">
+                    Exportar endereços
+                </a>
+            </div>
+        </section>
+    </main>
+{% endblock %}
