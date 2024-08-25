@@ -24,15 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY_RESERVA")
-CSRF_TRUSTED_ORIGINS = ['https://reserva-dzk6.onrender.com/']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = [
-    'https://reserva-dzk6.onrender.com/',
-    'localhost'
-]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
