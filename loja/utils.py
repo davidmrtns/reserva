@@ -44,10 +44,10 @@ def ordenar_produtos(produtos, ordem):
 
 def enviar_email_compra(pedido):
     email = pedido.cliente.email
-    assunto = f"Pedido {pedido.id} aprovado"
+    assunto = f"Pedido {pedido.codigo_transacao} aprovado"
     corpo = f"""Parabéns, seu pedido foi aprovado!
-            ID do pedido: {pedido.id}
-            Valor total: {pedido.preco_total}"""
+            \nID do pedido: {pedido.id}
+            \nValor total: {pedido.preco_total}"""
     remetente = os.environ.get("EMAIL_HOST_USER_RESERVA")
     send_mail(assunto, corpo, remetente, [email])
 

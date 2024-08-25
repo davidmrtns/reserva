@@ -87,7 +87,7 @@
             <section class="similares">
                 <h2 class="similares__titulo">Gostou desse produto? Veja itens similares</h2>
                 <div class="similares__container">
-                    {% for similiar in similares %}
+                    {% for similar in similares %}
                         <a href="{% url 'ver_produto' similar.id %}" class="produto">
                             <div class="produto__imagem">
                                 <img src="{{ similar.imagem.url }}" alt="Imagem do Produto" />
