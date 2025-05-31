@@ -4,17 +4,21 @@ from .models import Pedido, ItensPedido, Cliente, Categoria, Tipo
 def carrinho(request):
     quant_carrinho = 0
     if request.user.is_authenticated:
-        cliente = request.user.cliente
+        try:
+            cliente = request.user.cliente
+        except Cliente.DoesNotExist:
+            cliente = None
     else:
         if request.COOKIES.get('id_sessao'):
             id_sessao = request.COOKIES.get('id_sessao')
-            cliente, criado = Cliente.objects.get_or_create(id_sessao=id_sessao)
+            cliente, _ = Cliente.objects.get_or_create(id_sessao=id_sessao)
         else:
             return {"quant_produtos_carrinho": quant_carrinho}
-    pedido, criado = Pedido.objects.get_or_create(cliente=cliente, finalizado=False)
-    itens_pedido = ItensPedido.objects.filter(pedido=pedido.id)
-    for item in itens_pedido:
-        quant_carrinho += item.quantidade
+    if cliente:
+        pedido, _ = Pedido.objects.get_or_create(cliente=cliente, finalizado=False)
+        itens_pedido = ItensPedido.objects.filter(pedido=pedido.id)
+        for item in itens_pedido:
+            quant_carrinho += item.quantidade
     return {"quant_produtos_carrinho": quant_carrinho}
 
 
